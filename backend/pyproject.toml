@@ -38,7 +38,16 @@ build-backend = "hatchling.build"
 strict = true
 exclude = ["venv", ".venv", "alembic"]
 
+# 显示中文
+disable_test_id_escaping_and_forfeit_all_rights_to_community_support = true
+
+[[tool.uv.index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple"
+default = true
+
 [tool.ruff]
+# 参照 Black 代码行宽使用现代项目常用的 88 字符
+line-length = 88
 target-version = "py310"
 exclude = ["alembic"]
 
@@ -64,6 +73,15 @@ ignore = [
 [tool.ruff.lint.pyupgrade]
 # Preserve types, even if a file imports `from __future__ import annotations`.
 keep-runtime-typing = true
+
+[tool.ruff.format]
+quote-style = "single"
+# 忽略“magic trailing comma”信号，让 formatter 在能合并一行时合并
+skip-magic-trailing-comma = true
+
+[tool.ruff.lint.isort]
+# 防止与忽略魔法逗号的设置冲突
+split-on-trailing-comma = false
 
 [tool.coverage.run]
 source = ["app"]
