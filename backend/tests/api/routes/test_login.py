@@ -46,6 +46,33 @@ def test_use_access_token(
     assert "email" in result
 
 
+def test_use_access_token_for_deleted_user_returns_auth_error(
+    client: TestClient, db: Session
+) -> None:
+    email = random_email()
+    password = random_lower_string()
+    user_create = UserCreate(
+        email=email,
+        full_name="Deleted User",
+        password=password,
+        is_active=True,
+        is_superuser=False,
+    )
+    user = create_user(session=db, user_create=user_create)
+    headers = user_authentication_headers(client=client, email=email, password=password)
+
+    db.delete(user)
+    db.commit()
+
+    r = client.post(
+        f"{settings.API_V1_STR}/login/test-token",
+        headers=headers,
+    )
+
+    assert r.status_code == 403
+    assert r.json() == {"detail": "Could not validate credentials"}
+
+
 def test_recovery_password(
     client: TestClient, normal_user_token_headers: dict[str, str]
 ) -> None:
