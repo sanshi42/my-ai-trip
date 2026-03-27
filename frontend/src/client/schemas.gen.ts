@@ -196,6 +196,32 @@ export const ItemsPublicSchema = {
     title: 'ItemsPublic'
 } as const;
 
+export const ItineraryDaySchema = {
+    properties: {
+        day: {
+            type: 'integer',
+            minimum: 1,
+            title: 'Day'
+        },
+        title: {
+            type: 'string',
+            maxLength: 255,
+            minLength: 1,
+            title: 'Title'
+        },
+        activities: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'Activities'
+        }
+    },
+    type: 'object',
+    required: ['day', 'title'],
+    title: 'ItineraryDay'
+} as const;
+
 export const MessageSchema = {
     properties: {
         message: {
@@ -266,6 +292,73 @@ export const TokenSchema = {
     type: 'object',
     required: ['access_token'],
     title: 'Token'
+} as const;
+
+export const TripPlanRequestSchema = {
+    properties: {
+        destination: {
+            type: 'string',
+            maxLength: 255,
+            minLength: 1,
+            title: 'Destination'
+        },
+        days: {
+            type: 'integer',
+            maximum: 30,
+            exclusiveMinimum: 0,
+            title: 'Days'
+        },
+        budget: {
+            type: 'string',
+            maxLength: 100,
+            minLength: 1,
+            title: 'Budget'
+        },
+        preferences: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'Preferences'
+        }
+    },
+    type: 'object',
+    required: ['destination', 'days', 'budget'],
+    title: 'TripPlanRequest'
+} as const;
+
+export const TripPlanResponseSchema = {
+    properties: {
+        destination: {
+            type: 'string',
+            title: 'Destination'
+        },
+        days: {
+            type: 'integer',
+            title: 'Days'
+        },
+        budget: {
+            type: 'string',
+            title: 'Budget'
+        },
+        preferences: {
+            items: {
+                type: 'string'
+            },
+            type: 'array',
+            title: 'Preferences'
+        },
+        itinerary: {
+            items: {
+                '$ref': '#/components/schemas/ItineraryDay'
+            },
+            type: 'array',
+            title: 'Itinerary'
+        }
+    },
+    type: 'object',
+    required: ['destination', 'days', 'budget', 'preferences', 'itinerary'],
+    title: 'TripPlanResponse'
 } as const;
 
 export const UpdatePasswordSchema = {

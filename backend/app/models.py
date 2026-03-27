@@ -127,3 +127,24 @@ class TokenPayload(SQLModel):
 class NewPassword(SQLModel):
     token: str
     new_password: str = Field(min_length=8, max_length=128)
+
+
+class TripPlanRequest(SQLModel):
+    destination: str = Field(min_length=1, max_length=255)
+    days: int = Field(gt=0, le=30)
+    budget: str = Field(min_length=1, max_length=100)
+    preferences: list[str] = Field(default_factory=list)
+
+
+class ItineraryDay(SQLModel):
+    day: int = Field(ge=1)
+    title: str = Field(min_length=1, max_length=255)
+    activities: list[str] = Field(default_factory=list)
+
+
+class TripPlanResponse(SQLModel):
+    destination: str
+    days: int
+    budget: str
+    preferences: list[str]
+    itinerary: list[ItineraryDay]

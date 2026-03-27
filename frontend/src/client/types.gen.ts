@@ -36,6 +36,12 @@ export type ItemUpdate = {
     description?: (string | null);
 };
 
+export type ItineraryDay = {
+    day: number;
+    title: string;
+    activities?: Array<(string)>;
+};
+
 export type Message = {
     message: string;
 };
@@ -55,6 +61,21 @@ export type PrivateUserCreate = {
 export type Token = {
     access_token: string;
     token_type?: string;
+};
+
+export type TripPlanRequest = {
+    destination: string;
+    days: number;
+    budget: string;
+    preferences?: Array<(string)>;
+};
+
+export type TripPlanResponse = {
+    destination: string;
+    days: number;
+    budget: string;
+    preferences: Array<(string)>;
+    itinerary: Array<ItineraryDay>;
 };
 
 export type UpdatePassword = {
@@ -176,6 +197,12 @@ export type PrivateCreateUserData = {
 };
 
 export type PrivateCreateUserResponse = (UserPublic);
+
+export type TripCreateMockTripPlanData = {
+    requestBody: TripPlanRequest;
+};
+
+export type TripCreateMockTripPlanResponse = (TripPlanResponse);
 
 export type UsersReadUsersData = {
     limit?: number;
