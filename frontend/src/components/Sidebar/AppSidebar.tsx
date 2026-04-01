@@ -1,7 +1,7 @@
-import { Briefcase, Home, Map, Users } from "lucide-react"
+import { Home, Map as MapIcon } from "lucide-react"
 
-import { SidebarAppearance } from "@/components/Common/Appearance"
 import { Logo } from "@/components/Common/Logo"
+import { useLocale } from "@/components/locale-provider"
 import {
   Sidebar,
   SidebarContent,
@@ -12,18 +12,13 @@ import useAuth from "@/hooks/useAuth"
 import { type Item, Main } from "./Main"
 import { User } from "./User"
 
-const baseItems: Item[] = [
-  { icon: Home, title: "Dashboard", path: "/" },
-  { icon: Briefcase, title: "Items", path: "/items" },
-  { icon: Map, title: "Trip", path: "/trip" },
-]
-
 export function AppSidebar() {
   const { user: currentUser } = useAuth()
-
-  const items = currentUser?.is_superuser
-    ? [...baseItems, { icon: Users, title: "Admin", path: "/admin" }]
-    : baseItems
+  const { t } = useLocale()
+  const items: Item[] = [
+    { icon: Home, title: t("nav.home"), path: "/" },
+    { icon: MapIcon, title: t("nav.trip"), path: "/trip" },
+  ]
 
   return (
     <Sidebar collapsible="icon">
@@ -34,7 +29,6 @@ export function AppSidebar() {
         <Main items={items} />
       </SidebarContent>
       <SidebarFooter>
-        <SidebarAppearance />
         <User user={currentUser} />
       </SidebarFooter>
     </Sidebar>

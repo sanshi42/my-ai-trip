@@ -10,6 +10,7 @@ import { z } from "zod"
 
 import { LoginService } from "@/client"
 import { AuthLayout } from "@/components/Common/AuthLayout"
+import { useLocale } from "@/components/locale-provider"
 import {
   Form,
   FormControl,
@@ -42,13 +43,14 @@ export const Route = createFileRoute("/recover-password")({
   head: () => ({
     meta: [
       {
-        title: "Recover Password - FastAPI Template",
+        title: "Recover Password - AI Trip",
       },
     ],
   }),
 })
 
 function RecoverPassword() {
+  const { t } = useLocale()
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,7 +68,7 @@ function RecoverPassword() {
   const mutation = useMutation({
     mutationFn: recoverPassword,
     onSuccess: () => {
-      showSuccessToast("Password recovery email sent successfully")
+      showSuccessToast(t("auth.recoverySent"))
       form.reset()
     },
     onError: handleError.bind(showErrorToast),
@@ -85,7 +87,7 @@ function RecoverPassword() {
           className="flex flex-col gap-6"
         >
           <div className="flex flex-col items-center gap-2 text-center">
-            <h1 className="text-2xl font-bold">Password Recovery</h1>
+            <h1 className="text-2xl font-bold">{t("auth.recoverHeading")}</h1>
           </div>
 
           <div className="grid gap-4">
@@ -94,7 +96,7 @@ function RecoverPassword() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t("auth.emailLabel")}</FormLabel>
                   <FormControl>
                     <Input
                       data-testid="email-input"
@@ -113,14 +115,14 @@ function RecoverPassword() {
               className="w-full"
               loading={mutation.isPending}
             >
-              Continue
+              {t("auth.recoverSubmit")}
             </LoadingButton>
           </div>
 
           <div className="text-center text-sm">
-            Remember your password?{" "}
+            {t("auth.rememberPassword")}{" "}
             <RouterLink to="/login" className="underline underline-offset-4">
-              Log in
+              {t("auth.logIn")}
             </RouterLink>
           </div>
         </form>
